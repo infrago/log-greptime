@@ -1,43 +1,45 @@
 # log-greptime
 
-`log-greptime` 是 `log` 模块的 `greptime` 驱动。
+`log-greptime` 是 `github.com/infrago/log` 的**greptime 驱动**。
 
-## 安装
+## 包定位
 
-```bash
-go get github.com/infrago/log@latest
-go get github.com/infrago/log-greptime@latest
-```
+- 类型：驱动
+- 作用：把 `log` 模块的统一接口落到 `greptime` 后端实现
 
-## 接入
+## 快速接入
 
 ```go
 import (
     _ "github.com/infrago/log"
     _ "github.com/infrago/log-greptime"
-    "github.com/infrago/infra"
 )
-
-func main() {
-    infra.Run()
-}
 ```
-
-## 配置示例
 
 ```toml
 [log]
 driver = "greptime"
 ```
 
-## 公开 API（摘自源码）
+## `setting` 专用配置项
 
-- `func (d *greptimeDriver) Connect(inst *blog.Instance) (blog.Connection, error)`
-- `func (c *greptimeConnection) Open() error`
-- `func (c *greptimeConnection) Close() error`
-- `func (c *greptimeConnection) Write(logs ...blog.Log) error`
+配置位置：`[log].setting`
 
-## 排错
+- `host`
+- `server`
+- `port`
+- `username`
+- `user`
+- `password`
+- `pass`
+- `database`
+- `db`
+- `table`
+- `timeout`
+- `insecure`
+- `tls`
 
-- driver 未生效：确认模块段 `driver` 值与驱动名一致
-- 连接失败：检查 endpoint/host/port/鉴权配置
+## 说明
+
+- `setting` 仅对当前驱动生效，不同驱动键名可能不同
+- 连接失败时优先核对 `setting` 中 host/port/认证/超时等参数
